@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:love_propose/create_link.dart';
+import 'package:love_propose/router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,14 +10,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Do you love me!',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      routerConfig: AppRoots().router,
+      // routeInformationParser: AppRoots().router.routeInformationParser,
+      // routerDelegate: AppRoots().router.routerDelegate,
+      // initialRoute: "/",
+      // routes: {
+      //   "/": (context) => CreateLink(),
+      //   "/message/:id": (context) => LoveU(),
+      // },
       debugShowCheckedModeBanner: false,
-      home: const CreateLink(),
+      // home: const CreateLink(),
     );
   }
 }

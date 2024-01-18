@@ -1,12 +1,15 @@
-
 import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class LoveU extends StatefulWidget {
-  const LoveU({super.key});
+  const LoveU({super.key, this.title, this.message, this.sno});
+  final String? title;
+  final String? message;
+  final String? sno;
 
   @override
   State<LoveU> createState() => _LoveUState();
@@ -49,7 +52,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    animationController.dispose();
+    // animationController.dispose();
     super.dispose();
   }
 
@@ -73,7 +76,10 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: Text(
-                        "Do you love me?",
+                        "${widget.title}" != "null" ||
+                                "${widget.title}".isNotEmpty
+                            ? "${utf8.fuse(base64).decode("${widget.title}")}"
+                            : "Do you love me?",
                         style: GoogleFonts.greatVibes(
                           fontSize: 60,
                           // fontWeight: FontWeight.bold,
@@ -84,10 +90,10 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                       padding: EdgeInsets.only(left: 30, bottom: 10),
                       child: ElevatedButton(
                         onPressed: () => changeTheValue(),
-                        child: Text("No"),
+                        child: Text(widget.sno == "1" ? "Yes" : "No"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.pink,
+                          backgroundColor: Colors.pink,
+                          foregroundColor: Colors.white,
                           minimumSize: Size(150, 50),
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
@@ -124,7 +130,10 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                       alignment: Alignment.bottomCenter,
                       scale: animation,
                       child: Text(
-                        "Just Missuuu!!!",
+                        "${widget.message}" != "null" ||
+                                "${widget.message}".isNotEmpty
+                            ? "${utf8.fuse(base64).decode("${widget.message}")}"
+                            : "Just Missuuu!!!",
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -146,11 +155,11 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                       padding: EdgeInsets.all(30),
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: Text("Yes"),
+                        child: Text(widget.sno == "0" ? "Yes" : "No"),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(150, 50),
-                          backgroundColor: Colors.pink,
-                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.pink,
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
                           shape: RoundedRectangleBorder(

@@ -1,6 +1,34 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:love_propose/style.dart';
+import 'package:encrypt/encrypt.dart';
+import 'package:encrypt/encrypt.dart' as en;
+
+class EncryptData {
+//for AES Algorithms
+
+  static Encrypted? encrypted;
+  static var decrypted;
+
+  static encryptAES(plainText) {
+    final key = en.Key.fromUtf8('my 32 length key................');
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+    encrypted = encrypter.encrypt(plainText, iv: iv);
+    print(encrypted!.base64);
+  }
+
+  static decryptAES(plainText) {
+    final key = en.Key.fromUtf8('my 32 length key................');
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+    decrypted = encrypter.decrypt(encrypted!, iv: iv);
+    print(decrypted);
+  }
+}
 
 class CreateLink extends StatefulWidget {
   const CreateLink({super.key});
@@ -36,13 +64,23 @@ class _CreateLinkState extends State<CreateLink> {
     ),
   );
 
-  void handleSubmit() {
-    print('Yes/No Selected: ${isYesSelected ? 'Yes' : 'No'}');
+  void handleSubmit(BuildContext context) {
+    print('Yes/No Selected: ${isYesSelected ? '1' : '0'}');
     print('Text Field 1: ${textController1.text}');
     print('Text Field 2: ${textController2.text}');
 
+    // try {
+    final Codec<String, String> stringToBase64 = utf8.fuse(base64);
+
+    String encode(String text) => stringToBase64.encode(text);
+
     int selectedOptionIndex = isSelectedList.indexOf(true);
     print('Selected Option: Option ${selectedOptionIndex + 1}');
+    (context).goNamed('message', queryParameters: {
+      "sno": "${isYesSelected ? '1' : '0'}",
+      "title": "${encode(textController1.text)}",
+      "message": "${encode(textController2.text)}"
+    });
   }
 
   final hight = SizedBox(height: 15);
@@ -98,7 +136,6 @@ class _CreateLinkState extends State<CreateLink> {
                 ],
               ),
               hight,
-
               titleFn("Enter your question?"),
               hight,
               TextField(
@@ -111,7 +148,6 @@ class _CreateLinkState extends State<CreateLink> {
                 ),
               ),
               hight,
-
               titleFn("Your secrite message"),
               hight,
               TextField(
@@ -147,21 +183,8 @@ class _CreateLinkState extends State<CreateLink> {
               ),
               SizedBox(height: 20),
               HeartShapedButton(
-                onPressed: handleSubmit,
+                onPressed: () => handleSubmit(context),
               ),
-              // ElevatedButton(
-              //   onPressed: handleSubmit,
-              //   style: selectedBtn,
-              //   child: ClipPath(
-              //     clipper: HeartClipper(),
-              //     child: Container(
-              //       width: 100.0,
-              //       height: 100.0,
-              //       color: Colors
-              //           .red, // Change the color according to your preference
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
