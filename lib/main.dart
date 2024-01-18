@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'love_u.dart';
+import 'package:love_propose/create_link.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const LoveU(),
+      home: const CreateLink(),
     );
   }
 }
