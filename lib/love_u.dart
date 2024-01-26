@@ -1,9 +1,10 @@
-import 'dart:math';
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:love_propose/widget/turkish_btn.dart';
 
 class LoveU extends StatefulWidget {
   const LoveU({super.key, this.title, this.message, this.sno});
@@ -16,28 +17,11 @@ class LoveU extends StatefulWidget {
 }
 
 class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
-  double top = 92;
-  double? right;
-
-  double? maxTop;
-  double? maxRight;
-
-  setUp(BuildContext context) {
-    var _random = Random();
-    int _genTop = _random.nextInt(maxTop!.toInt());
-    int _genRight = _random.nextInt(maxRight!.toInt());
-
-    top = _genTop.toDouble();
-    right = _genRight.toDouble();
-
-    setState(() {});
-  }
-
   bool correctChoice = false;
 
   changeTheValue() {
     correctChoice = true;
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       correctChoice = false;
       setState(() {});
     });
@@ -50,128 +34,92 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
   late Animation<double> animation =
       CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
 
-  @override
-  void dispose() {
-    // animationController.dispose();
-    super.dispose();
-  }
+  GlobalKey key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    double fullHight = MediaQuery.of(context).size.height;
-    double fullWidth = MediaQuery.of(context).size.width;
-    maxTop = fullHight - 90;
-    maxRight = fullWidth - 130;
     return Scaffold(
-        drawer: Icon(Icons.menu),
-        body: Container(
-          width: fullWidth,
-          child: Stack(
-            children: [
-              Container(
-                height: fullHight,
-                child: Column(
+        drawer: const Icon(Icons.menu),
+        body: SafeArea(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    constraints:
+                        const BoxConstraints(minHeight: 100, maxHeight: 500),
+                    child: Image.asset('image/propose.png'),
+                  ),
+                ),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Text(
-                        "${widget.title}" != "null" ||
+                    Container(
+                      height: 150,
+                      padding: const EdgeInsets.all(16),
+                      child: AutoSizeText(
+                        "${widget.title}" != "null" &&
                                 "${widget.title}".isNotEmpty
-                            ? "${utf8.fuse(base64).decode("${widget.title}")}"
+                            ? utf8.fuse(base64).decode("${widget.title}")
                             : "Do you love me?",
-                        style: GoogleFonts.greatVibes(
-                          fontSize: 60,
-                          // fontWeight: FontWeight.bold,
-                        ),
+                        style: GoogleFonts.greatVibes(fontSize: 60),
+                        overflow: TextOverflow.clip,
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 30, bottom: 10),
+                      padding: const EdgeInsets.only(left: 30, bottom: 10),
                       child: ElevatedButton(
                         onPressed: () => changeTheValue(),
+                        style: btnStyle1,
                         child: Text(widget.sno == "1" ? "Yes" : "No"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.pink,
-                          foregroundColor: Colors.white,
-                          minimumSize: Size(150, 50),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 28),
                       child: Text(
                           "(If you click this button you can see my message)"),
                     )
                   ],
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Image.asset('image/propose.png'),
-              ),
-              if (correctChoice) ...[
-                Align(
-                  alignment: Alignment.center,
-                  child: Lottie.asset(
-                    'image/enjoy.json',
-                    repeat: false,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    constraints: BoxConstraints(maxWidth: 380),
-                    child: ScaleTransition(
-                      alignment: Alignment.bottomCenter,
-                      scale: animation,
-                      child: Text(
-                        "${widget.message}" != "null" ||
-                                "${widget.message}".isNotEmpty
-                            ? "${utf8.fuse(base64).decode("${widget.message}")}"
-                            : "Just Missuuu!!!",
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                if (correctChoice) ...[
+                  Align(
+                    alignment: Alignment.center,
+                    child: Lottie.asset(
+                      'image/enjoy.json',
+                      repeat: false,
                     ),
                   ),
-                ),
-              ],
-              Positioned(
-                top: top,
-                right: right,
-                left: right == null ? 190 : null,
-                child: MouseRegion(
-                  onHover: (event) => setUp(context),
-                  child: GestureDetector(
+                  Center(
                     child: Container(
-                      padding: EdgeInsets.all(30),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(widget.sno == "0" ? "Yes" : "No"),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(150, 50),
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.pink,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                      constraints: const BoxConstraints(maxWidth: 380),
+                      child: ScaleTransition(
+                        alignment: Alignment.bottomCenter,
+                        scale: animation,
+                        child: Text(
+                          "${widget.message}" != "null" &&
+                                  "${widget.message}".isNotEmpty
+                              ? utf8.fuse(base64).decode("${widget.message}")
+                              : "Just Missuuu!!!",
+                          style: const TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ],
+                ],
+                // TurkishBtn(
+                //   sno: widget.sno,
+                //   top: 122,
+                //   left: 8,
+                // ),
+                TurkishBtn(sno: widget.sno),
+              ],
+            ),
           ),
         ));
   }

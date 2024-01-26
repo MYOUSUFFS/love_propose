@@ -8,7 +8,7 @@ class AppRoots {
     routes: [
       GoRoute(
         path: '/',
-        pageBuilder: (context, state) => MaterialPage(
+        pageBuilder: (context, state) => const MaterialPage(
           child: CreateLink(),
         ),
       ),

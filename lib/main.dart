@@ -17,15 +17,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routerConfig: AppRoots().router,
-      // routeInformationParser: AppRoots().router.routeInformationParser,
-      // routerDelegate: AppRoots().router.routerDelegate,
-      // initialRoute: "/",
-      // routes: {
-      //   "/": (context) => CreateLink(),
-      //   "/message/:id": (context) => LoveU(),
-      // },
       debugShowCheckedModeBanner: false,
-      // home: const CreateLink(),
     );
   }
 }

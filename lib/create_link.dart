@@ -4,31 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:love_propose/style.dart';
-import 'package:encrypt/encrypt.dart';
-import 'package:encrypt/encrypt.dart' as en;
-
-class EncryptData {
-//for AES Algorithms
-
-  static Encrypted? encrypted;
-  static var decrypted;
-
-  static encryptAES(plainText) {
-    final key = en.Key.fromUtf8('my 32 length key................');
-    final iv = IV.fromLength(16);
-    final encrypter = Encrypter(AES(key));
-    encrypted = encrypter.encrypt(plainText, iv: iv);
-    print(encrypted!.base64);
-  }
-
-  static decryptAES(plainText) {
-    final key = en.Key.fromUtf8('my 32 length key................');
-    final iv = IV.fromLength(16);
-    final encrypter = Encrypter(AES(key));
-    decrypted = encrypter.decrypt(encrypted!, iv: iv);
-    print(decrypted);
-  }
-}
+import 'package:myself/myself.dart';
 
 class CreateLink extends StatefulWidget {
   const CreateLink({super.key});
@@ -47,27 +23,28 @@ class _CreateLinkState extends State<CreateLink> {
   static ButtonStyle unselectedBtn = ElevatedButton.styleFrom(
     backgroundColor: Colors.white,
     foregroundColor: Colors.pink,
-    minimumSize: Size(150, 50),
-    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+    minimumSize: const Size(150, 50),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
     ),
   );
 
   static ButtonStyle selectedBtn = ElevatedButton.styleFrom(
-    minimumSize: Size(150, 50),
+    minimumSize: const Size(150, 50),
     backgroundColor: Colors.pink,
     foregroundColor: Colors.white,
-    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
     ),
   );
 
   void handleSubmit(BuildContext context) {
-    print('Yes/No Selected: ${isYesSelected ? '1' : '0'}');
-    print('Text Field 1: ${textController1.text}');
-    print('Text Field 2: ${textController2.text}');
+    MySelfColor()
+        .printHex("#000000", 'Yes/No Selected: ${isYesSelected ? '1' : '0'}');
+    MySelfColor().printHex("#000000", 'Text Field 1: ${textController1.text}');
+    MySelfColor().printHex("#000000", 'Text Field 2: ${textController2.text}');
 
     // try {
     final Codec<String, String> stringToBase64 = utf8.fuse(base64);
@@ -75,16 +52,17 @@ class _CreateLinkState extends State<CreateLink> {
     String encode(String text) => stringToBase64.encode(text);
 
     int selectedOptionIndex = isSelectedList.indexOf(true);
-    print('Selected Option: Option ${selectedOptionIndex + 1}');
+    MySelfColor().printHex(
+        "#000000", 'Selected Option: Option ${selectedOptionIndex + 1}');
     (context).goNamed('message', queryParameters: {
-      "sno": "${isYesSelected ? '1' : '0'}",
-      "title": "${encode(textController1.text)}",
-      "message": "${encode(textController2.text)}"
+      "sno": "${isYesSelected ? 1 : 0}",
+      "title": encode(textController1.text),
+      "message": encode(textController2.text)
     });
   }
 
-  final hight = SizedBox(height: 15);
-  final width = SizedBox(width: 15);
+  final hight = const SizedBox(height: 15);
+  final width = const SizedBox(width: 15);
 
   titleFn(String title) => Text(
         title,
@@ -106,7 +84,7 @@ class _CreateLinkState extends State<CreateLink> {
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          constraints: BoxConstraints(maxWidth: 660, minWidth: 340),
+          constraints: const BoxConstraints(maxWidth: 660, minWidth: 340),
           child: ListView(
             children: [
               titleFn("What you want from your person?"),
@@ -121,9 +99,9 @@ class _CreateLinkState extends State<CreateLink> {
                       });
                     },
                     style: isYesSelected ? selectedBtn : unselectedBtn,
-                    child: Text('Yes'),
+                    child: const Text('Yes'),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -131,7 +109,7 @@ class _CreateLinkState extends State<CreateLink> {
                       });
                     },
                     style: !isYesSelected ? selectedBtn : unselectedBtn,
-                    child: Text('No'),
+                    child: const Text('No'),
                   ),
                 ],
               ),
@@ -181,7 +159,7 @@ class _CreateLinkState extends State<CreateLink> {
                     ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               HeartShapedButton(
                 onPressed: () => handleSubmit(context),
               ),

@@ -63,8 +63,8 @@ class HeartShapedButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(90.0),
           ),
-          padding: EdgeInsets.all(42.0),
-          side: BorderSide(
+          padding: const EdgeInsets.all(42.0),
+          side: const BorderSide(
             color: Colors.transparent, // Set the outline color
           ),
           elevation: 13),
@@ -74,7 +74,7 @@ class HeartShapedButton extends StatelessWidget {
         child: Stack(
           children: [
             CustomPaint(
-              size: Size(100, 100),
+              size: const Size(100, 100),
               painter: HeartPainter(),
             ),
             Align(
