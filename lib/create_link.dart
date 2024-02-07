@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:love_propose/style.dart';
-import 'package:myself/myself.dart';
 
 class CreateLink extends StatefulWidget {
   const CreateLink({super.key});
@@ -18,7 +18,11 @@ class _CreateLinkState extends State<CreateLink> {
   TextEditingController textController1 = TextEditingController();
   TextEditingController textController2 = TextEditingController();
 
+  String? generatedLink;
+
   List<bool> isSelectedList = [true, false, false, false];
+
+  final ScrollController scroll = ScrollController();
 
   static ButtonStyle unselectedBtn = ElevatedButton.styleFrom(
     backgroundColor: Colors.white,
@@ -41,24 +45,14 @@ class _CreateLinkState extends State<CreateLink> {
   );
 
   void handleSubmit(BuildContext context) {
-    MySelfColor()
-        .printHex("#000000", 'Yes/No Selected: ${isYesSelected ? '1' : '0'}');
-    MySelfColor().printHex("#000000", 'Text Field 1: ${textController1.text}');
-    MySelfColor().printHex("#000000", 'Text Field 2: ${textController2.text}');
-
-    // try {
     final Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
     String encode(String text) => stringToBase64.encode(text);
+    generatedLink =
+        "http://localhost:50975/#/message?sno=${isYesSelected ? 1 : 0}&title=${encode(textController1.text)}&message=${encode(textController2.text)}";
 
-    int selectedOptionIndex = isSelectedList.indexOf(true);
-    MySelfColor().printHex(
-        "#000000", 'Selected Option: Option ${selectedOptionIndex + 1}');
-    (context).goNamed('message', queryParameters: {
-      "sno": "${isYesSelected ? 1 : 0}",
-      "title": encode(textController1.text),
-      "message": encode(textController2.text)
-    });
+    setState(() {});
+    scroll.jumpTo(scroll.position.maxScrollExtent + 70);
   }
 
   final hight = const SizedBox(height: 15);
@@ -85,8 +79,32 @@ class _CreateLinkState extends State<CreateLink> {
         child: Container(
           padding: const EdgeInsets.all(16.0),
           constraints: const BoxConstraints(maxWidth: 660, minWidth: 340),
+          color: Colors.transparent,
           child: ListView(
+            controller: scroll,
             children: [
+              titleFn("Some option image's for you"),
+              hight,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 15,
+                runSpacing: 15,
+                children: [
+                  for (int i = 0; i < isSelectedList.length; i++)
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          for (int j = 0; j < isSelectedList.length; j++) {
+                            isSelectedList[j] = (i == j);
+                          }
+                        });
+                      },
+                      style: isSelectedList[i] ? selectedBtn : unselectedBtn,
+                      child: Text('Option ${i + 1}'),
+                    ),
+                ],
+              ),
+              hight,
               titleFn("What you want from your person?"),
               hight,
               Row(
@@ -138,31 +156,38 @@ class _CreateLinkState extends State<CreateLink> {
                 ),
               ),
               hight,
-              titleFn("Some option image's for you"),
-              hight,
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 15,
-                runSpacing: 15,
-                children: [
-                  for (int i = 0; i < isSelectedList.length; i++)
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          for (int j = 0; j < isSelectedList.length; j++) {
-                            isSelectedList[j] = (i == j);
-                          }
-                        });
-                      },
-                      style: isSelectedList[i] ? selectedBtn : unselectedBtn,
-                      child: Text('Option ${i + 1}'),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 20),
               HeartShapedButton(
                 onPressed: () => handleSubmit(context),
               ),
+              if (generatedLink != null)
+                ListTile(
+                  title:
+                      Text("$generatedLink", overflow: TextOverflow.ellipsis),
+                  // trailing: const Icon(Icons.copy),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Clipboard.setData(
+                              ClipboardData(text: "$generatedLink"),
+                            );
+                          },
+                          child: Text("Copy"),
+                        ),
+                        width,
+                        ElevatedButton(
+                          onPressed: () {
+                            js.context.callMethod("open", ["$generatedLink"]);
+                          },
+                          child: Text("Go to  check"),
+                        )
+                      ],
+                    ),
+                  ),
+                )
             ],
           ),
         ),

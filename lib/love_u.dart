@@ -68,14 +68,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                         overflow: TextOverflow.clip,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 30, bottom: 10),
-                      child: ElevatedButton(
-                        onPressed: () => changeTheValue(),
-                        style: btnStyle1,
-                        child: Text(widget.sno == "1" ? "Yes" : "No"),
-                      ),
-                    ),
+                    SizedBox(height: 60),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 28),
                       child: Text(
@@ -112,15 +105,48 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                     ),
                   ),
                 ],
-                // TurkishBtn(
-                //   sno: widget.sno,
-                //   top: 122,
-                //   left: 8,
-                // ),
-                TurkishBtn(sno: widget.sno),
+                TurkishBtn(
+                  top: 122,
+                  left: 8,
+                  fn: changeTheValue,
+                  movingBtnIs: widget.sno == "0" ? true : false,
+                  btnStyle: btnStyle1,
+                  yesOrNo: 'Yes',
+                ),
+                TurkishBtn(
+                  fn: changeTheValue,
+                  movingBtnIs: widget.sno == "1" ? true : false,
+                  btnStyle: btnStyle2,
+                  yesOrNo: 'No',
+                ),
               ],
             ),
           ),
         ));
   }
 }
+
+ButtonStyle btnStyle1 = ElevatedButton.styleFrom(
+  backgroundColor: Colors.pink,
+  foregroundColor: Colors.white,
+  disabledBackgroundColor: Colors.pink,
+  disabledForegroundColor: Colors.white,
+  minimumSize: const Size(150, 50),
+  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10.0),
+  ),
+);
+
+ButtonStyle btnStyle2 = ElevatedButton.styleFrom(
+  enableFeedback: false,
+  minimumSize: const Size(150, 50),
+  backgroundColor: Colors.pink.shade900,
+  foregroundColor: Colors.white,
+  disabledBackgroundColor: Colors.pink.shade900,
+  disabledForegroundColor: Colors.white,
+  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10.0),
+  ),
+);
