@@ -4,7 +4,9 @@ import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:love_propose/style.dart';
+import 'package:love_propose/style/style.dart';
+
+import 'style/image.dart';
 
 class CreateLink extends StatefulWidget {
   const CreateLink({super.key});
@@ -20,7 +22,15 @@ class _CreateLinkState extends State<CreateLink> {
 
   String? generatedLink;
 
-  List<bool> isSelectedList = [true, false, false, false];
+  List<bool> isSelectedList = [true, false, false, false, false];
+  List<String> buttonName = [
+    "None",
+    "To Boy",
+    "To Girl",
+    "To Family",
+    "To Friends"
+  ];
+  int _seleted = 0;
 
   final ScrollController scroll = ScrollController();
 
@@ -48,9 +58,10 @@ class _CreateLinkState extends State<CreateLink> {
     final Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
     String encode(String text) => stringToBase64.encode(text);
+    // generatedLink =
+    //     "http://localhost:50975/#/message?sno=${isYesSelected ? 1 : 0}&title=${encode(textController1.text)}&message=${encode(textController2.text)}&option=$_seleted";
     generatedLink =
-        "http://localhost:50975/#/message?sno=${isYesSelected ? 1 : 0}&title=${encode(textController1.text)}&message=${encode(textController2.text)}";
-
+        "https://myousuffs.github.io/propose/#/go?data=${encode("sno=${isYesSelected ? 1 : 0}&title=${encode(textController1.text)}&message=${encode(textController2.text)}&option=$_seleted")}";
     setState(() {});
     scroll.jumpTo(scroll.position.maxScrollExtent + 70);
   }
@@ -83,28 +94,6 @@ class _CreateLinkState extends State<CreateLink> {
           child: ListView(
             controller: scroll,
             children: [
-              titleFn("Some option image's for you"),
-              hight,
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 15,
-                runSpacing: 15,
-                children: [
-                  for (int i = 0; i < isSelectedList.length; i++)
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          for (int j = 0; j < isSelectedList.length; j++) {
-                            isSelectedList[j] = (i == j);
-                          }
-                        });
-                      },
-                      style: isSelectedList[i] ? selectedBtn : unselectedBtn,
-                      child: Text('Option ${i + 1}'),
-                    ),
-                ],
-              ),
-              hight,
               titleFn("What you want from your person?"),
               hight,
               Row(
@@ -154,6 +143,52 @@ class _CreateLinkState extends State<CreateLink> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
+              ),
+              hight,
+              titleFn("Some option image's for you"),
+              hight,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 15,
+                      runSpacing: 15,
+                      children: [
+                        for (int i = 0; i < isSelectedList.length; i++)
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                for (int j = 0;
+                                    j < isSelectedList.length;
+                                    j++) {
+                                  isSelectedList[j] = (i == j);
+                                  if (i == j) {
+                                    _seleted = j;
+                                  }
+                                }
+                              });
+                            },
+                            style:
+                                isSelectedList[i] ? selectedBtn : unselectedBtn,
+                            child: Text('${buttonName[i]}'),
+                          ),
+                      ],
+                    ),
+                  ),
+                  width,
+                  _seleted != 0
+                      ? Flexible(
+                          child: Image.asset(
+                            Images.listOfAllBGImages[_seleted],
+                            fit: BoxFit.contain,
+                            width: 150,
+                            height: 150,
+                          ),
+                        )
+                      : SizedBox(),
+                ],
               ),
               hight,
               HeartShapedButton(

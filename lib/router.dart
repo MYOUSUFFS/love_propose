@@ -19,7 +19,16 @@ class AppRoots {
           title: state.uri.queryParameters['title'],
           message: state.uri.queryParameters['message'],
           sno: state.uri.queryParameters['sno'],
+          image: int.parse(state.uri.queryParameters['option'] ?? "0"),
         ),
+      ),
+      GoRoute(
+        name: 'go',
+        path: '/go',
+        builder: (context, state) {
+          print(state.uri.queryParameters["data"]);
+          return passData(state.uri.queryParameters["data"]);
+        },
       ),
     ],
   );

@@ -4,13 +4,32 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:love_propose/style/image.dart';
 import 'package:love_propose/widget/turkish_btn.dart';
 
+Widget passData(String? data) {
+  if (data != null) {
+    final decodeData = utf8.fuse(base64).decode("$data");
+    print(decodeData);
+    final parsedData = Uri.splitQueryString(decodeData);
+    return LoveU(
+      title: parsedData['title'],
+      message: parsedData['message'],
+      sno: parsedData['sno'],
+      image: int.parse(parsedData['option'] ?? "0"),
+    );
+  } else {
+    return Scaffold(body: Center(child: Text("Error")));
+  }
+}
+
 class LoveU extends StatefulWidget {
-  const LoveU({super.key, this.title, this.message, this.sno});
+  const LoveU(
+      {super.key, this.title, this.message, this.sno, required this.image});
   final String? title;
   final String? message;
   final String? sno;
+  final int image;
 
   @override
   State<LoveU> createState() => _LoveUState();
@@ -50,7 +69,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                   child: Container(
                     constraints:
                         const BoxConstraints(minHeight: 100, maxHeight: 500),
-                    child: Image.asset('image/propose.png'),
+                    child: Image.asset(Images.listOfAllBGImages[widget.image]),
                   ),
                 ),
                 Column(
