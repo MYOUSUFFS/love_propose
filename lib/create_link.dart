@@ -86,144 +86,147 @@ class _CreateLinkState extends State<CreateLink> {
           style: GoogleFonts.greatVibes(fontSize: 32),
         ),
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          constraints: const BoxConstraints(maxWidth: 660, minWidth: 340),
-          color: Colors.transparent,
-          child: ListView(
-            controller: scroll,
-            children: [
-              titleFn("What you want from your person?"),
-              hight,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isYesSelected = true;
-                      });
-                    },
-                    style: isYesSelected ? selectedBtn : unselectedBtn,
-                    child: const Text('Yes'),
-                  ),
-                  const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isYesSelected = false;
-                      });
-                    },
-                    style: !isYesSelected ? selectedBtn : unselectedBtn,
-                    child: const Text('No'),
-                  ),
-                ],
-              ),
-              hight,
-              titleFn("Enter your question?"),
-              hight,
-              TextField(
-                controller: textController1,
-                decoration: InputDecoration(
-                  // labelText: 'Text Field 1',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            constraints: const BoxConstraints(maxWidth: 660, minWidth: 340),
+            color: Colors.transparent,
+            child: ListView(
+              controller: scroll,
+              children: [
+                titleFn("What you want from your person?"),
+                hight,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isYesSelected = true;
+                        });
+                      },
+                      style: isYesSelected ? selectedBtn : unselectedBtn,
+                      child: const Text('Yes'),
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isYesSelected = false;
+                        });
+                      },
+                      style: !isYesSelected ? selectedBtn : unselectedBtn,
+                      child: const Text('No'),
+                    ),
+                  ],
+                ),
+                hight,
+                titleFn("Enter your question?"),
+                hight,
+                TextField(
+                  controller: textController1,
+                  decoration: InputDecoration(
+                    // labelText: 'Text Field 1',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
-              ),
-              hight,
-              titleFn("Your secrite message"),
-              hight,
-              TextField(
-                controller: textController2,
-                decoration: InputDecoration(
-                  // labelText: 'Text Field 2',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                hight,
+                titleFn("Your secrite message"),
+                hight,
+                TextField(
+                  controller: textController2,
+                  decoration: InputDecoration(
+                    // labelText: 'Text Field 2',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
-              ),
-              hight,
-              titleFn("Some option image's for you"),
-              hight,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 15,
-                      runSpacing: 15,
-                      children: [
-                        for (int i = 0; i < isSelectedList.length; i++)
+                hight,
+                titleFn("Some option image's for you"),
+                hight,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 15,
+                        runSpacing: 15,
+                        children: [
+                          for (int i = 0; i < isSelectedList.length; i++)
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  for (int j = 0;
+                                      j < isSelectedList.length;
+                                      j++) {
+                                    isSelectedList[j] = (i == j);
+                                    if (i == j) {
+                                      _seleted = j;
+                                    }
+                                  }
+                                });
+                              },
+                              style: isSelectedList[i]
+                                  ? selectedBtn
+                                  : unselectedBtn,
+                              child: Text('${buttonName[i]}'),
+                            ),
+                        ],
+                      ),
+                    ),
+                    width,
+                    _seleted != 0
+                        ? Flexible(
+                            child: Image.asset(
+                              Images.listOfAllBGImages[_seleted],
+                              fit: BoxFit.contain,
+                              width: 150,
+                              height: 150,
+                            ),
+                          )
+                        : SizedBox(),
+                  ],
+                ),
+                hight,
+                HeartShapedButton(
+                  onPressed: () => handleSubmit(context),
+                ),
+                if (generatedLink != null)
+                  ListTile(
+                    title:
+                        Text("$generatedLink", overflow: TextOverflow.ellipsis),
+                    // trailing: const Icon(Icons.copy),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           ElevatedButton(
                             onPressed: () {
-                              setState(() {
-                                for (int j = 0;
-                                    j < isSelectedList.length;
-                                    j++) {
-                                  isSelectedList[j] = (i == j);
-                                  if (i == j) {
-                                    _seleted = j;
-                                  }
-                                }
-                              });
+                              Clipboard.setData(
+                                ClipboardData(text: "$generatedLink"),
+                              );
                             },
-                            style:
-                                isSelectedList[i] ? selectedBtn : unselectedBtn,
-                            child: Text('${buttonName[i]}'),
+                            child: Text("Copy"),
                           ),
-                      ],
+                          width,
+                          ElevatedButton(
+                            onPressed: () {
+                              js.context.callMethod("open", ["$generatedLink"]);
+                            },
+                            child: Text("Go to  check"),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  width,
-                  _seleted != 0
-                      ? Flexible(
-                          child: Image.asset(
-                            Images.listOfAllBGImages[_seleted],
-                            fit: BoxFit.contain,
-                            width: 150,
-                            height: 150,
-                          ),
-                        )
-                      : SizedBox(),
-                ],
-              ),
-              hight,
-              HeartShapedButton(
-                onPressed: () => handleSubmit(context),
-              ),
-              if (generatedLink != null)
-                ListTile(
-                  title:
-                      Text("$generatedLink", overflow: TextOverflow.ellipsis),
-                  // trailing: const Icon(Icons.copy),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(text: "$generatedLink"),
-                            );
-                          },
-                          child: Text("Copy"),
-                        ),
-                        width,
-                        ElevatedButton(
-                          onPressed: () {
-                            js.context.callMethod("open", ["$generatedLink"]);
-                          },
-                          child: Text("Go to  check"),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-            ],
+                  )
+              ],
+            ),
           ),
         ),
       ),

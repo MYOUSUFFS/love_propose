@@ -43,6 +43,7 @@ dependencies:
   encrypt: ^5.0.3
   myself: ^0.0.4
   auto_size_text: ^3.0.0
+  json_theme: ^6.4.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - image/enjoy.json
+    - image/light_theme.json
+    - image/dark_theme.json
     - image/boy.png
     - image/girl.png
     - image/family.png
