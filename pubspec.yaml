@@ -43,7 +43,9 @@ dependencies:
   encrypt: ^5.0.3
   myself: ^0.0.4
   auto_size_text: ^3.0.0
-  json_theme: ^6.4.0
+
+dependency_overrides:
+  json_theme: ^6.3.2
 
 dev_dependencies:
   flutter_test:

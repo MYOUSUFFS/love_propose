@@ -24,8 +24,7 @@ Widget passData(String? data) {
 }
 
 class LoveU extends StatefulWidget {
-  const LoveU(
-      {super.key, this.title, this.message, this.sno, required this.image});
+  LoveU({super.key, this.title, this.message, this.sno, required this.image});
   final String? title;
   final String? message;
   final String? sno;
@@ -40,7 +39,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
 
   changeTheValue() {
     correctChoice = true;
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 5), () {
       correctChoice = false;
       setState(() {});
     });
@@ -48,7 +47,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
   }
 
   late AnimationController animationController =
-      AnimationController(vsync: this, duration: const Duration(seconds: 2))
+      AnimationController(vsync: this, duration: Duration(seconds: 2))
         ..forward();
   late Animation<double> animation =
       CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
@@ -58,7 +57,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const Icon(Icons.menu),
+        drawer: Icon(Icons.menu),
         body: SafeArea(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -77,7 +76,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                   children: [
                     Container(
                       height: 150,
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       child: AutoSizeText(
                         "${widget.title}" != "null" &&
                                 "${widget.title}".isNotEmpty
@@ -88,7 +87,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: 60),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 28),
                       child: Text(
                           "(If you click this button you can see my message)"),
@@ -114,7 +113,7 @@ class _LoveUState extends State<LoveU> with SingleTickerProviderStateMixin {
                                   "${widget.message}".isNotEmpty
                               ? utf8.fuse(base64).decode("${widget.message}")
                               : "Just Missuuu!!!",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
                           ),
@@ -150,8 +149,8 @@ ButtonStyle btnStyle1 = ElevatedButton.styleFrom(
   foregroundColor: Colors.white,
   disabledBackgroundColor: Colors.pink,
   disabledForegroundColor: Colors.white,
-  minimumSize: const Size(150, 50),
-  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+  minimumSize: Size(150, 50),
+  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(10.0),
   ),
@@ -159,12 +158,12 @@ ButtonStyle btnStyle1 = ElevatedButton.styleFrom(
 
 ButtonStyle btnStyle2 = ElevatedButton.styleFrom(
   enableFeedback: false,
-  minimumSize: const Size(150, 50),
+  minimumSize: Size(150, 50),
   backgroundColor: Colors.pink.shade900,
   foregroundColor: Colors.white,
   disabledBackgroundColor: Colors.pink.shade900,
   disabledForegroundColor: Colors.white,
-  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(10.0),
   ),

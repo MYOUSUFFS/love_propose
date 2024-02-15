@@ -97,6 +97,7 @@ class _CreateLinkState extends State<CreateLink> {
               children: [
                 titleFn("What you want from your person?"),
                 hight,
+                Text("வணக்கம்"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
